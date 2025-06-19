@@ -12,4 +12,7 @@ sudo yum upgrade
 sudo yum install fontconfig java-21-openjdk -y
 sudo yum install jenkins -y
 sudo systemctl daemon-reload
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
