@@ -1,3 +1,7 @@
+select 
+# Amazon Machine Image (AMI)
+# Amazon Linux 2 AMI (HVM) - Kernel 5.10, SSD Volume Type
+
 sudo yum install maven -y git
 sudo yum install java-1.8.0 -y
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
