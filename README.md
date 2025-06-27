@@ -25,3 +25,7 @@ The script performs the following:
 
 ```bash
 ssh -i your-key.pem ec2-user@your-ec2-public-ip
+
+
+### Step 2: Download the script or create a new file
+nano install-jenkins.sh
