@@ -66,3 +66,39 @@ http://<your-ec2-public-ip>:8080
 Open Port 8080
 Make sure to allow port 8080 in your EC2 Security Group to access Jenkins from your browser.
 
+### If you using t2.micro 2023 AMI 
+scripts to disk allocate
+```
+#!/bin/bash
+
+echo " Checking /tmp usage..."
+df -h /tmp
+
+echo " Top large files in /tmp:"
+sudo du -sh /tmp/* 2>/dev/null | sort -hr | head -n 10
+
+echo -e "\n Cleaning /tmp directory..."
+sudo rm -rf /tmp/*
+sudo mkdir -p /tmp
+sudo chmod 1777 /tmp
+echo "/tmp cleaned."
+
+echo -e "\n Checking if /tmp is mounted as tmpfs..."
+if mount | grep -q '/tmp type tmpfs'; then
+    echo " Detected tmpfs. Expanding /tmp to 2G..."
+    sudo mount -o remount,size=2G /tmp
+
+    echo " Persist this change in /etc/fstab? (y/n)"
+    read persist
+    if [[ $persist == "y" ]]; then
+        sudo sed -i '/\/tmp/d' /etc/fstab
+        echo "tmpfs /tmp tmpfs defaults,size=2G 0 0" | sudo tee -a /etc/fstab
+        echo " fstab updated."
+    fi
+else
+    echo "/tmp is not tmpfs. Consider increasing the disk size or reconfiguring Jenkins temp dir."
+fi
+
+echo -e "\n Done. Recommend restarting the Jenkins agent."
+```
+
